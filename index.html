@@ -171,7 +171,7 @@
             <svg class="user-chip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
           </button>
         </div>
-        <div id="model-chip" class="chip chip--model" title="AI Model — Click to configure"><i class="chip__dot"></i><span id="model-label">Gemini (2.5 Flash)</span></div>
+        <div id="model-chip" class="chip chip--model" title="AI Model — Click to configure"><i class="chip__dot"></i><span id="model-label">Gemini (3.6 Flash)</span></div>
         <div id="state-chip" class="chip" data-state="idle"><i class="chip__dot"></i><span id="state-label">Idle</span></div>
         <button id="btn-settings" class="icon-btn" title="API & voice settings" aria-label="Settings"><svg>
             <use href="#i-gear" />
@@ -370,6 +370,8 @@
       <div id="messages" class="messages" role="log" aria-live="polite"></div>
       <div class="suggestions" id="suggestions">
         <button class="chipbtn">👋 Introduce yourself</button>
+        <button class="chipbtn">💡 Solve Two Sum in Python</button>
+        <button class="chipbtn">🏗️ Explain System Architecture</button>
         <button class="chipbtn">🎯 Ask me an interview question</button>
         <button class="chipbtn">Formal executive mode</button>
         <button class="chipbtn">📄 Upload resume & start interview</button>
@@ -437,7 +439,7 @@
           </div>
           <div class="field" data-when="gemini openai">
             <label for="set-model">Model</label>
-            <input id="set-model" type="text" placeholder="gemini-2.0-flash / gpt-4o-mini" />
+            <input id="set-model" type="text" placeholder="gemini-3.6-flash / gpt-4o-mini" />
           </div>
           <div class="field">
             <label for="set-tts-provider">Voice Speech Engine</label>

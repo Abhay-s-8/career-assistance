@@ -1,8 +1,100 @@
 /* ============================================================
-   AURA — Chat transcript
+   SIYA (AURA) — Chat Transcript & Interactive UI Cards
+   Handles real-time conversation messages, formatted code solutions,
+   ATS announcements, interview gates, and interactive actions.
    ============================================================ */
 
-import { $, el } from './dom.js';
+import { $, el, toast } from './dom.js';
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Parses markdown into rich, safe HTML for chat solutions.
+ * Supports syntax code blocks with one-click copy, inline code,
+ * bold, italic, headings, lists, and paragraphs.
+ */
+function renderMarkdown(md) {
+  if (!md) return '';
+  // Strip expression tags from displayed chat message
+  let text = String(md).replace(/^\[EXPRESSION:\s*[a-zA-Z_]+\]\s*/i, '').trim();
+
+  // 1. Extract and preserve code blocks
+  const codeBlocks = [];
+  text = text.replace(/```([a-zA-Z0-9_-]*)\r?\n([\s\S]*?)```/g, (match, lang, code) => {
+    const id = `__CODE_BLOCK_${codeBlocks.length}__`;
+    codeBlocks.push({ lang: (lang || 'code').toLowerCase(), code: code.trimEnd() });
+    return id;
+  });
+
+  // 2. Escape HTML in the remaining text
+  let html = escapeHtml(text);
+
+  // 3. Headings (h3, h4)
+  html = html.replace(/^###\s+(.+)$/gm, '<h4 class="chat-md-h4">$1</h4>');
+  html = html.replace(/^##\s+(.+)$/gm, '<h3 class="chat-md-h3">$1</h3>');
+  html = html.replace(/^#\s+(.+)$/gm, '<h3 class="chat-md-h3">$1</h3>');
+
+  // 4. Bold & Italic
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+  html = html.replace(/(^|[^*])\*([^*]+)\*([^*]|$)/g, '$1<em>$2</em>$3');
+
+  // 5. Inline code
+  html = html.replace(/`([^`]+)`/g, '<code class="chat-inline-code">$1</code>');
+
+  // 6. Lists and Paragraphs
+  const lines = html.split('\n');
+  const processed = [];
+  let inList = false;
+
+  for (let line of lines) {
+    const bulletMatch = line.match(/^\s*[-•*+]\s+(.+)$/);
+    const numMatch = line.match(/^\s*(\d+)\.\s+(.+)$/);
+
+    if (bulletMatch) {
+      if (!inList) { processed.push('<ul class="chat-md-list">'); inList = 'ul'; }
+      else if (inList !== 'ul') { processed.push('</ol><ul class="chat-md-list">'); inList = 'ul'; }
+      processed.push(`<li>${bulletMatch[1]}</li>`);
+    } else if (numMatch) {
+      if (!inList) { processed.push('<ol class="chat-md-list">'); inList = 'ol'; }
+      else if (inList !== 'ol') { processed.push('</ul><ol class="chat-md-list">'); inList = 'ol'; }
+      processed.push(`<li>${numMatch[2]}</li>`);
+    } else {
+      if (inList) { processed.push(inList === 'ol' ? '</ol>' : '</ul>'); inList = false; }
+      if (line.trim().startsWith('<h3') || line.trim().startsWith('<h4') || line.trim().startsWith('__CODE_BLOCK_')) {
+        processed.push(line);
+      } else if (line.trim()) {
+        processed.push(`<p class="chat-md-p">${line}</p>`);
+      }
+    }
+  }
+  if (inList) processed.push(inList === 'ol' ? '</ol>' : '</ul>');
+
+  html = processed.join('\n');
+
+  // 7. Re-inject code blocks with syntax header and copy button
+  for (let i = 0; i < codeBlocks.length; i++) {
+    const cb = codeBlocks[i];
+    const blockHtml = `
+<div class="chat-code-block">
+  <div class="chat-code-header">
+    <span class="chat-code-lang">${escapeHtml(cb.lang)}</span>
+    <button class="chat-code-copy" type="button" data-code="${encodeURIComponent(cb.code)}">📋 Copy Code</button>
+  </div>
+  <pre><code class="language-${escapeHtml(cb.lang)}">${escapeHtml(cb.code)}</code></pre>
+</div>`.trim();
+    html = html.replace(`__CODE_BLOCK_${i}__`, blockHtml);
+  }
+
+  return html;
+}
 
 export class ChatView {
   constructor() {
@@ -31,8 +123,36 @@ export class ChatView {
       );
       node.append(head);
     }
+
     const body = el('div', { class: 'msg__text' });
-    body.textContent = text;
+    if (role === 'bot') {
+      body.innerHTML = renderMarkdown(text);
+      // Attach copy listeners to any code blocks in this response
+      for (const btn of body.querySelectorAll('.chat-code-copy')) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const raw = decodeURIComponent(btn.dataset.code || '');
+          if (raw && navigator.clipboard) {
+            navigator.clipboard.writeText(raw).then(() => {
+              const prev = btn.textContent;
+              btn.textContent = '✓ Copied!';
+              btn.classList.add('is-copied');
+              toast('✓ Code copied to clipboard!');
+              setTimeout(() => {
+                btn.textContent = prev;
+                btn.classList.remove('is-copied');
+              }, 2000);
+            }).catch(() => {
+              toast('Failed to copy code.');
+            });
+          }
+        });
+      }
+    } else {
+      body.textContent = text;
+    }
+
     node.append(body);
     this.list.append(node);
     this._scroll();
@@ -63,7 +183,7 @@ export class ChatView {
     const node = el('div', { class: 'msg msg--bot msg--intro-card glass' },
       el('div', { class: 'msg--bot-head' },
         el('i', { class: 'msg--bot-dot' }),
-        document.createTextNode('Siya · Google Gemini 2.5 Flash')
+        document.createTextNode('Siya · Google Gemini 3.6 Flash')
       ),
       el('div', { class: 'intro-card-header' },
         el('div', { class: 'intro-card-badge' },

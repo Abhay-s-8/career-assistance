@@ -21,7 +21,7 @@ const FILLER_PATTERNS = [
   { word: 'right?', regex: /\b(right\?)\b/gi }
 ];
 
-/** STAR Method Linguistic Markers */
+
 const STAR_MARKERS = {
   situation: [
     'at my previous', 'at my current', 'in my last project', 'we were working on',

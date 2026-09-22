@@ -11,7 +11,7 @@ function apiProxyPlugin(serverGeminiKey, serverElevenKey) {
       res.end(JSON.stringify({
         available: !!serverGeminiKey,
         provider: 'gemini',
-        defaultModel: 'gemini-2.5-flash',
+        defaultModel: 'gemini-3.6-flash',
       }));
       return;
     }
@@ -23,7 +23,7 @@ function apiProxyPlugin(serverGeminiKey, serverElevenKey) {
       req.on('end', async () => {
         try {
           const data = JSON.parse(body || '{}');
-          const targetModel = data.model || 'gemini-2.5-flash';
+          const targetModel = data.model || 'gemini-3.6-flash';
           const effectiveKey = (data.customApiKey || serverGeminiKey || '').trim();
 
           if (!effectiveKey) {
@@ -40,7 +40,7 @@ function apiProxyPlugin(serverGeminiKey, serverElevenKey) {
             contents: data.contents,
             generationConfig: data.generationConfig || {
               temperature: 0.85,
-              maxOutputTokens: 600,
+              maxOutputTokens: 2048,
               topP: 0.95,
             },
           };
@@ -48,7 +48,7 @@ function apiProxyPlugin(serverGeminiKey, serverElevenKey) {
           const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(targetModel)}:generateContent?key=${encodeURIComponent(effectiveKey)}`;
 
           const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 12000);
+          const timeout = setTimeout(() => controller.abort(), 20000);
 
           const response = await fetch(geminiUrl, {
             method: 'POST',

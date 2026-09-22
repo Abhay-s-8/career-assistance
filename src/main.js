@@ -19,7 +19,7 @@ import { Speaker, ttsSupported } from './audio/tts.js';
 import { SpeechInput, sttSupported } from './audio/stt.js';
 
 import { LocalBrain } from './ai/localBrain.js';
-import { RemoteBrain } from './ai/providers.js';
+import { RemoteBrain, formatForSpeech } from './ai/providers.js';
 import { parseCommands } from './ai/commands.js';
 import { ResumeDrawer } from './ui/resumeDrawer.js';
 import { parseResumeFile, getSampleResume, loadSavedResume, saveResume, clearSavedResume } from './ai/resumeParser.js';
@@ -592,11 +592,11 @@ async function boot() {
     if (remoteBrain && remoteBrain.configured) {
       const p = remoteBrain.provider;
       if (p === 'gemini') {
-        const m = (remoteBrain.model || 'gemini-2.5-flash').replace('gemini-', '');
+        const m = (remoteBrain.model || 'gemini-3.6-flash').replace('gemini-', '');
         modelLabel.textContent = `Gemini (${m})`;
         modelChip?.classList.add('is-connected');
         modelChip?.classList.remove('is-offline');
-        if (modelChip) modelChip.title = `Connected to Google Gemini (${remoteBrain.model || 'gemini-2.5-flash'})`;
+        if (modelChip) modelChip.title = `Connected to Google Gemini (${remoteBrain.model || 'gemini-3.6-flash'})`;
       } else {
         modelLabel.textContent = `OpenAI (${remoteBrain.model || 'gpt-4o-mini'})`;
         modelChip?.classList.add('is-connected');
@@ -1174,7 +1174,7 @@ async function boot() {
           ? `Hello, ${userFirstName}! Great to see you. I am Siya, your 3D AI Career Guidance Mentor. What would you like to prepare for today? We can practice a mock interview, review your resume with ATS scoring, or explore system architecture!`
           : `Hello! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. How can I help you today? Feel free to ask me technical interview questions, upload your resume for ATS scoring, or explore live coding challenges!`);
       
-      const providerLabel = remoteBrain.configured ? `Google Gemini (${(remoteBrain.model || 'gemini-2.5-flash').replace('gemini-', '')})` : 'Google Gemini AI';
+      const providerLabel = remoteBrain.configured ? `Google Gemini (${(remoteBrain.model || 'gemini-3.6-flash').replace('gemini-', '')})` : 'Google Gemini AI';
       chat.add('bot', greetingText, null, { provider: providerLabel });
       
       const startTime = performance.now();
@@ -1250,7 +1250,7 @@ async function boot() {
       const key = isGemini ? geminiKeyMatch[1] : openAiKeyMatch[1];
       settings.provider = isGemini ? 'gemini' : 'openai';
       settings.apiKey = key;
-      settings.model = isGemini ? 'gemini-2.5-flash' : 'gpt-4o-mini';
+      settings.model = isGemini ? 'gemini-3.6-flash' : 'gpt-4o-mini';
       saveSettings(settings);
 
       remoteBrain = new RemoteBrain(settings);
@@ -1260,7 +1260,7 @@ async function boot() {
       updateModelBadge();
 
       chat.add('user', '•••••••••••••••••••••••••••••••• (API Key provided)', userDisplayName);
-      const confirmMsg = `✓ Successfully connected to ${isGemini ? 'Google Gemini (gemini-2.5-flash)' : 'OpenAI (gpt-4o-mini)'}! My vocabulary and deep reasoning are now fully unlocked. Ask me anything!`;
+      const confirmMsg = `✓ Successfully connected to ${isGemini ? 'Google Gemini (gemini-3.6-flash)' : 'OpenAI (gpt-4o-mini)'}! My vocabulary and deep reasoning are now fully unlocked. Ask me anything!`;
       chat.add('bot', confirmMsg);
       toast(`✓ ${isGemini ? 'Gemini' : 'OpenAI'} API Key connected & saved!`);
       if (speaker && !speaker.muted) speaker.speak(confirmMsg, lip).catch(() => {});
@@ -1270,7 +1270,7 @@ async function boot() {
     if (/(did you connect|are you connected|is gemini connected|connected to gemini|check gemini|gemini status|which model|what model|are you gemini)/i.test(message)) {
       chat.add('user', rawMessage, userDisplayName);
       const isConnected = remoteBrain.configured;
-      const modelName = settings.model || 'gemini-2.5-flash';
+      const modelName = settings.model || 'gemini-3.6-flash';
       const statusText = isConnected
         ? `Yes! I am connected to Google Gemini (${modelName}). My vocabulary, deep reasoning, coding evaluation, and mock interview simulation are fully active.`
         : "I am currently running on my local offline engine. You can connect Google Gemini anytime by pasting your API key directly in this chat or opening Settings!";
@@ -1341,7 +1341,8 @@ Keep it conversational, inspiring, and concise.`;
       chat.add('bot', feedback);
       if (!speaker.muted && ttsSupported) {
         expressions.set('happy');
-        speaker.speak(feedback, lip).catch(() => {}).finally(() => {
+        const spokenFeedback = formatForSpeech(feedback);
+        speaker.speak(spokenFeedback, lip).catch(() => {}).finally(() => {
           expressions.set('neutral');
           face.markPreset('neutral');
           chatInterviewSession.currentIndex++;
@@ -1413,7 +1414,7 @@ Keep it conversational, inspiring, and concise.`;
 
         const isGeminiActive = remoteBrain.configured && remoteBrain.provider === 'gemini';
         providerLabel = isGeminiActive
-          ? `Google Gemini (${(remoteBrain.model || 'gemini-2.5-flash').replace('gemini-', '')})`
+          ? `Google Gemini (${(remoteBrain.model || 'gemini-3.6-flash').replace('gemini-', '')})`
           : (remoteBrain.configured ? `OpenAI (${remoteBrain.model || 'gpt-4o-mini'})` : 'Google Gemini AI');
 
         try {
@@ -1437,10 +1438,12 @@ Keep it conversational, inspiring, and concise.`;
       avatar?.playAnimation(reaction.animation, reaction.speed);
       face.markMotion(reaction.animation);
 
-      if (!speaker.muted && ttsSupported) {
-        speaker.speak(reply, lip).then(() => {
-          expressions.set('neutral');
-          face.markPreset('neutral');
+      const spokenText = formatForSpeech(reply);
+
+      if (!speaker.muted && ttsSupported && spokenText) {
+        speaker.speak(spokenText, lip).then(() => {
+          expressions.set('smile');
+          face.markPreset('smile');
           avatar?.playAnimation('Idle', 0.5);
           face.markMotion('Idle');
           setState('idle');
@@ -1455,8 +1458,8 @@ Keep it conversational, inspiring, and concise.`;
         setTimeout(() => {
           avatar?.playAnimation('Idle', 0.5);
           face.markMotion('Idle');
-          expressions.set('neutral');
-          face.markPreset('neutral');
+          expressions.set('smile');
+          face.markPreset('smile');
           setState('idle');
         }, Math.min(5500, Math.max(2200, reply.length * 45)));
       }
@@ -1466,12 +1469,34 @@ Keep it conversational, inspiring, and concise.`;
   }
 
   /**
-   * Intelligently classifies the emotional tone and context of the chat turn
+   * Intelligently classifies the emotional tone, solution depth, and context of the chat turn
    * to drive Siya's 3D facial expressions, skeletal gestures, and posture dynamically.
    */
   function analyzeReaction(userPrompt = '', botReply = '') {
+    const rawR = String(botReply || '').trim();
+
+    // Check for explicit Gemini expression directive tag
+    const exprMatch = rawR.match(/^\[EXPRESSION:\s*([a-zA-Z_]+)\]/i);
+    if (exprMatch) {
+      const tag = exprMatch[1].toLowerCase();
+      const map = {
+        confident: { tone: 'confident', expression: 'confident', animation: 'Talking_2', speed: 0.4 },
+        thinking: { tone: 'thinking', expression: 'thinking', animation: 'Talking_0', speed: 0.45 },
+        happy: { tone: 'happy', expression: 'happy', animation: 'Talking_1', speed: 0.4 },
+        empathetic: { tone: 'empathetic', expression: 'empathetic', animation: 'Talking_0', speed: 0.4 },
+        surprised: { tone: 'surprised', expression: 'surprised', animation: 'Talking_0', speed: 0.4 },
+        greeting: { tone: 'greeting', expression: 'greeting', animation: 'Standing_Greeting', speed: 0.4 },
+        smile: { tone: 'talking', expression: 'smile', animation: 'Talking_1', speed: 0.4 },
+        funnyface: { tone: 'happy', expression: 'funnyFace', animation: 'Laughing', speed: 0.4 },
+        laughing: { tone: 'happy', expression: 'funnyFace', animation: 'Laughing', speed: 0.4 },
+        angry: { tone: 'angry', expression: 'angry', animation: 'Angry', speed: 0.4 },
+        sad: { tone: 'sad', expression: 'sad', animation: 'Talking_0', speed: 0.4 },
+      };
+      if (map[tag]) return map[tag];
+    }
+
     const p = (userPrompt || '').toLowerCase();
-    const r = (botReply || '').toLowerCase();
+    const r = rawR.toLowerCase();
     const combined = `${p} ${r}`;
 
     // 0. Greeting, Introduction & Welcome
@@ -1518,9 +1543,20 @@ Keep it conversational, inspiring, and concise.`;
       };
     }
 
-    // 4. Strategic Leadership, Senior/Staff, Executive & Formal Authority
+    // 4. Code Solutions, Algorithms, Complexity, Data Structures & LeetCode (Siya's Authoritative & Confident Delivery)
+    if (/```|def |function |class |return |two sum|hash map|binary search|dynamic programming|complexity|time complexity|space complexity|o\(n\)|o\(1\)|o\(log n\)|optimal solution|here is the solution|code implementation|algorithm/i.test(r)
+      || /two sum|leetcode|dsa|algorithm|solve|solution|code|implementation|data structure|binary tree|sliding window|two pointer/i.test(p)) {
+      return {
+        tone: 'solution',
+        expression: 'confident',
+        animation: 'Talking_2',
+        speed: 0.4
+      };
+    }
+
+    // 5. Strategic Leadership, Senior/Staff, Executive, Architecture & Distributed Systems
     if (/formal|executive|leadership|strategy|senior|staff|principal|director|lead|production scale|system design|architect/i.test(p)
-      || /leadership|senior|staff|architect|production|scale|expert|mastery|achieve|strategic|governance|high-throughput|resilience/i.test(r)) {
+      || /leadership|senior|staff|architect|production|scale|expert|mastery|achieve|strategic|governance|high-throughput|resilience|microservices|kubernetes|kafka|redis|distributed system/i.test(r)) {
       return {
         tone: 'confident',
         expression: 'confident',
@@ -1529,9 +1565,9 @@ Keep it conversational, inspiring, and concise.`;
       };
     }
 
-    // 5. Deep Technical Inquiry, Architecture & Problem Solving
-    if (/\?$|how to|why|explain|analyze|architecture|tradeoff|database|distributed|algorithm|complexity|kafka|microservice|kubernetes|redis|sql|nosql|optimize/i.test(p)
-      || /analyz|architecture|evaluate|tradeoff|diagnos|consider|mechanism|under the hood|algorithm|pattern|throughput|latency/i.test(r)) {
+    // 6. Deep Technical Inquiry, Troubleshooting & Debugging
+    if (/\?$|how to|why|explain|analyze|architecture|tradeoff|database|distributed|algorithm|complexity|kafka|microservice|kubernetes|redis|sql|nosql|optimize|debug|error|bug/i.test(p)
+      || /analyz|architecture|evaluate|tradeoff|diagnos|consider|mechanism|under the hood|algorithm|pattern|throughput|latency|investigate/i.test(r)) {
       return {
         tone: 'thinking',
         expression: 'thinking',
@@ -1540,7 +1576,7 @@ Keep it conversational, inspiring, and concise.`;
       };
     }
 
-    // 6. Surprise, Shock, Critical Incidents & Alerts
+    // 7. Surprise, Shock, Critical Incidents & Alerts
     if (/wow|astonish|surpris|really\?|no way|omg|unbelievable|incident|outage|crash|security breach|vulnerability|data loss/i.test(combined)) {
       return {
         tone: 'surprised',
@@ -1550,17 +1586,17 @@ Keep it conversational, inspiring, and concise.`;
       };
     }
 
-    // 7. Sadness, Rejection, Struggle, Bugs & Empathy
+    // 8. Sadness, Rejection, Struggle, Bugs & Empathy
     if (/sad|rejected|fail|lost|unfortunate|sorry|struggling|depressed|nervous|anxious|frustrat|stuck|hard time|bug|defect/i.test(combined)) {
       return {
         tone: 'sad',
-        expression: 'sad',
+        expression: 'empathetic',
         animation: 'Talking_0',
         speed: 0.4
       };
     }
 
-    // 8. Assertiveness, Challenge & Debate
+    // 9. Assertiveness, Challenge & Debate
     if (/angry|mad|fight|strict|refuse|disagree|never|demand|strict/i.test(combined)) {
       return {
         tone: 'angry',
@@ -1570,7 +1606,7 @@ Keep it conversational, inspiring, and concise.`;
       };
     }
 
-    // 9. Standard Conversational Flow
+    // 10. Standard Conversational Flow
     return {
       tone: 'talking',
       expression: 'smile',
