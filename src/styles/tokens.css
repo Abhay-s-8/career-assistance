@@ -1,0 +1,106 @@
+@import 'pixel-retroui/dist/fonts.css';
+
+/* ============================================================
+   SIYA — Design Tokens (Taste-Skill Refined Aesthetics)
+   Curated HSL accents over deep obsidian glass substrate.
+   Disciplined single-accent hierarchy, anti-slop typography,
+   crisp glassmorphism, and tactile micro-interactions.
+   ============================================================ */
+
+:root {
+  /* --- Primary hue anchors (theme switches adjust these) --- */
+  --hue-a: 190;          /* Primary Neon — Electric Sky / Cyan */
+  --hue-b: 270;          /* Secondary Neon — Deep Iris / Violet */
+
+  /* --- Disciplined Accent Scale --- */
+  --accent:        hsl(var(--hue-a) 100% 55%);
+  --accent-soft:   hsl(var(--hue-a) 100% 55% / 0.12);
+  --accent-hover:  hsl(var(--hue-a) 100% 62% / 0.20);
+  --accent-line:   hsl(var(--hue-a) 100% 65% / 0.36);
+  --accent-glow:   hsl(var(--hue-a) 100% 55% / 0.28);
+  --accent-2:      hsl(var(--hue-b) 95% 68%);
+  --accent-2-soft: hsl(var(--hue-b) 95% 68% / 0.12);
+  --accent-2-glow: hsl(var(--hue-b) 95% 65% / 0.25);
+
+  /* --- Obsidian Substrate (Anti-Slop Clean Dark Mode) --- */
+  --bg-0: hsl(240 10% 3.9%);   /* #09090b - Clean Obsidian */
+  --bg-1: hsl(240 6% 7%);      /* #111113 - Primary Substrate */
+  --bg-2: hsl(240 5% 10%);     /* #18181b - Inset Card Substrate */
+  --bg-3: hsl(240 4% 14%);     /* #222226 - Elevated Panel */
+
+  /* --- Frosted Glass Materiality --- */
+  --glass-bg:     hsl(240 8% 9% / 0.68);
+  --glass-bg-2:   hsl(240 8% 12% / 0.45);
+  --glass-brd:    hsl(0 0% 100% / 0.08);
+  --glass-brd-hi: hsl(0 0% 100% / 0.16);
+  --glass-blur:   24px;
+  --glass-shadow:
+    0 24px 60px -18px hsl(0 0% 0% / 0.75),
+    inset 0 1px 0 hsl(0 0% 100% / 0.12),
+    inset 0 -1px 0 hsl(0 0% 0% / 0.4);
+
+  /* --- Typography Ink (High Contrast & Legibility) --- */
+  --ink:      hsl(210 40% 98%);  /* Primary text #f8fafc */
+  --ink-2:    hsl(215 20% 80%);  /* Secondary body text #cbd5e1 */
+  --ink-3:    hsl(215 14% 60%);  /* Muted captions #94a3b8 */
+  --ink-4:    hsl(215 12% 42%);  /* Disabled / subtle borders #64748b */
+
+  /* --- Status & Indicator Tokens --- */
+  --ok:   hsl(152 76% 50%);      /* Success Emerald */
+  --warn: hsl(38 96% 55%);       /* Warning Amber */
+  --err:  hsl(354 86% 60%);      /* Critical Coral Red */
+
+  /* --- Geometry & Corner Radii --- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* --- Motion & Spring Curves --- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  --t-fast: 0.18s;
+  --t-med: 0.30s;
+  --t-slow: 0.55s;
+
+  /* --- Typography Stacks --- */
+  --font-ui: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-dsp: 'Space Grotesk', 'Plus Jakarta Sans', var(--font-ui);
+  --font-code: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* --- Layout & Safety Margins --- */
+  --gutter: 20px;
+  --safe-t: max(var(--gutter), env(safe-area-inset-top));
+  --safe-b: max(var(--gutter), env(safe-area-inset-bottom));
+  --topbar-h: 60px;
+}
+
+/* --- Curated Theme Presets --- */
+[data-theme='cyberpunk'] { --hue-a: 328; --hue-b: 190; }
+[data-theme='gold']      { --hue-a: 38;  --hue-b: 22;  }
+[data-theme='matrix']    { --hue-a: 148; --hue-b: 162; }
+[data-theme='studio']    { --hue-a: 190; --hue-b: 270; }
+[data-theme='retro']     {
+  --hue-a: 50;
+  --hue-b: 338;
+  --font-ui: 'Minecraft', 'Plus Jakarta Sans', sans-serif;
+  --font-dsp: 'Minecraft', 'Space Grotesk', sans-serif;
+  --font-code: 'Minecraft', 'JetBrains Mono', monospace;
+  --r-sm: 2px;
+  --r-md: 3px;
+  --r-lg: 4px;
+  --r-xl: 6px;
+  --r-pill: 4px;
+  --glass-shadow: 4px 4px 0px hsl(0 0% 0% / 0.9), inset -2px -2px 0px hsl(var(--hue-a) 100% 50% / 0.45), inset 2px 2px 0px hsl(var(--hue-b) 100% 65% / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

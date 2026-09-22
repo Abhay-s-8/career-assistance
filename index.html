@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#05070f" />
+  <meta name="description"
+    content="AURA — an interactive 3D AI companion with real-time facial expressions, speech lip-sync and voice conversation." />
+  <title>SIYA · 3D AI Career Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2300e5ff' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23b06bff'/%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+  <!-- ============================ ICON SPRITE (zero icon-library dependency) ============================ -->
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-mic" viewBox="0 0 24 24">
+      <path d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 1 0-7 0v6A3.5 3.5 0 0 0 12 15Z" />
+      <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="M3.6 20.4 21 12 3.6 3.6 3.5 10.3l12 1.7-12 1.7z" />
+    </symbol>
+    <symbol id="i-sound-on" viewBox="0 0 24 24">
+      <path d="M4 9.5h3.2L12 5.2v13.6L7.2 14.5H4z" />
+      <path d="M15.4 9a4.2 4.2 0 0 1 0 6M18 6.4a8 8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-sound-off" viewBox="0 0 24 24">
+      <path d="M4 9.5h3.2L12 5.2v13.6L7.2 14.5H4z" />
+      <path d="m16 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24">
+      <path d="M4 9V4h5M20 9V4h-5M4 15v5h5m11-5v5h-5" fill="none" stroke="currentColor" stroke-width="1.9"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-collapse" viewBox="0 0 24 24">
+      <path d="M9 4v5H4m11-5v5h5M9 20v-5H4m11 5v-5h5" fill="none" stroke="currentColor" stroke-width="1.9"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24">
+      <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" fill="none" stroke="currentColor"
+        stroke-width="1.8" />
+      <path
+        d="M19.4 13.6a1.5 1.5 0 0 0 .3 1.65l.05.05a1.8 1.8 0 1 1-2.55 2.55l-.05-.05a1.5 1.5 0 0 0-1.65-.3 1.5 1.5 0 0 0-.9 1.37V19a1.8 1.8 0 1 1-3.6 0v-.08a1.5 1.5 0 0 0-.98-1.37 1.5 1.5 0 0 0-1.65.3l-.05.05A1.8 1.8 0 1 1 4.25 15.3l.05-.05a1.5 1.5 0 0 0 .3-1.65 1.5 1.5 0 0 0-1.37-.9H3a1.8 1.8 0 1 1 0-3.6h.08A1.5 1.5 0 0 0 4.45 8.1a1.5 1.5 0 0 0-.3-1.65l-.05-.05A1.8 1.8 0 1 1 6.65 3.85l.05.05a1.5 1.5 0 0 0 1.65.3h.07a1.5 1.5 0 0 0 .9-1.37V2.8a1.8 1.8 0 1 1 3.6 0v.08a1.5 1.5 0 0 0 .9 1.37 1.5 1.5 0 0 0 1.65-.3l.05-.05a1.8 1.8 0 1 1 2.55 2.55l-.05.05a1.5 1.5 0 0 0-.3 1.65v.07a1.5 1.5 0 0 0 1.37.9H21a1.8 1.8 0 1 1 0 3.6h-.08a1.5 1.5 0 0 0-1.37.9Z"
+        fill="none" stroke="currentColor" stroke-width="1.6" />
+    </symbol>
+    <symbol id="i-face" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <circle cx="9" cy="10" r="1.3" />
+      <circle cx="15" cy="10" r="1.3" />
+      <path d="M8 14.4a4.6 4.6 0 0 0 8 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path d="M21 12a8 8 0 0 1-8 8H7.6L3 22.4l1-4.6A8 8 0 1 1 21 12Z" fill="none" stroke="currentColor"
+        stroke-width="1.8" stroke-linejoin="round" />
+      <circle cx="8.6" cy="12" r="1.15" />
+      <circle cx="12" cy="12" r="1.15" />
+      <circle cx="15.4" cy="12" r="1.15" />
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m5 12.5 4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24">
+      <path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.9"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" fill="none" stroke="currentColor"
+        stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-resume" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor"
+        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      <polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <line x1="10" y1="9" x2="8" y2="9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-code" viewBox="0 0 24 24">
+      <polyline points="16 18 22 12 16 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <polyline points="8 6 2 12 8 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+      <line x1="14" y1="4" x2="10" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-award" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M15.4 12.8 17 22l-5-3-5 3 1.6-9.2" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" fill="none"
+        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+    </symbol>
+    <symbol id="i-camera-off" viewBox="0 0 24 24">
+      <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      <path d="M21 21H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h1m3-3h6l2 3h4a2 2 0 0 1 2 2v9.34m-7.72-2.06a4 4 0 0 1-5.56-5.56"
+        fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <polygon points="12 7 14.5 12 12 17 9.5 12" fill="currentColor" />
+    </symbol>
+    <symbol id="i-chair" viewBox="0 0 24 24">
+      <path d="M7 19v2m10-2v2M6 8V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4m-13 4h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM12 16v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+  </svg>
+
+  <!-- ============================ LOADING SCREEN ============================ -->
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader__grid" aria-hidden="true"></div>
+    <div class="loader__core">
+      <div class="loader__ring" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1 class="loader__brand">SIYA</h1>
+      <p class="loader__tag">3D AI Career Guide</p>
+      <div class="loader__bar"><i id="loader-fill"></i></div>
+      <div class="loader__meta">
+        <span id="loader-status">Booting neural stage…</span>
+        <span id="loader-pct" class="loader__pct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ APP ============================ -->
+  <main id="app" class="app" aria-hidden="true">
+    <div class="studio-backdrop" aria-hidden="true">
+      <div class="studio-grid"></div>
+      <div class="studio-aurora aurora-1"></div>
+      <div class="studio-aurora aurora-2"></div>
+      <div class="studio-horizon"></div>
+    </div>
+    <canvas id="stage" aria-label="3D avatar stage"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- ---------- TOP BAR ---------- -->
+    <header class="topbar glass">
+      <div class="brand">
+        <span class="brand__orb" aria-hidden="true"></span>
+        <span class="brand__text">SIYA<i>·</i><em>3D AI Companion</em></span>
+      </div>
+      <div class="topbar__right">
+        <div id="auth-wrap" class="auth-wrap">
+          <div id="auth-guest-btns" class="auth-guest-btns">
+            <button id="btn-topbar-signin" class="btn-auth-signin" type="button" title="Sign In to your existing account">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              <span>Sign In</span>
+            </button>
+            <button id="btn-topbar-signup" class="btn-auth-signup" type="button" title="Register candidate account with resume">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              <span>Sign Up</span>
+            </button>
+          </div>
+          <button id="btn-topbar-user" class="user-chip" type="button" hidden>
+            <span class="user-avatar-mini" id="topbar-avatar-initials">U</span>
+            <span class="user-chip-name" id="topbar-user-name">User</span>
+            <svg class="user-chip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div id="model-chip" class="chip chip--model" title="AI Model — Click to configure"><i class="chip__dot"></i><span id="model-label">Gemini (2.5 Flash)</span></div>
+        <div id="state-chip" class="chip" data-state="idle"><i class="chip__dot"></i><span id="state-label">Idle</span></div>
+        <button id="btn-settings" class="icon-btn" title="API & voice settings" aria-label="Settings"><svg>
+            <use href="#i-gear" />
+          </svg></button>
+        <button id="btn-fullscreen" class="icon-btn" title="Fullscreen" aria-label="Toggle fullscreen"><svg>
+            <use href="#i-expand" />
+          </svg></button>
+      </div>
+    </header>
+
+    <!-- ---------- VOICE HUD ---------- -->
+    <div id="voice-hud" class="voice-hud glass" role="status" aria-live="polite">
+      <div class="voice-hud__left">
+        <span class="voice-hud__pulse" aria-hidden="true"></span>
+        <div class="wave" id="wave" aria-hidden="true"></div>
+      </div>
+      <p class="voice-hud__text"><span id="voice-final"></span><span id="voice-interim" class="interim"></span><span
+          id="voice-hint" class="hint">Listening… speak now</span></p>
+      <div class="voice-hud__actions">
+        <button id="voice-done" class="pill pill--accent">Done</button>
+        <button id="voice-cancel" class="pill">Cancel</button>
+      </div>
+    </div>
+
+    <!-- ---------- SCENE TOOLBAR ---------- -->
+    <aside class="toolbar glass">
+      <div class="toolbar__group" role="group" aria-label="Camera presets">
+        <span class="toolbar__label">Camera</span>
+        <div class="seg" id="seg-camera">
+          <button class="seg__btn is-active" data-cam="portrait" title="Waist-up framing with full hand gestures and facial expressions">Waist Up</button>
+          <button class="seg__btn" data-cam="full" title="Full body view">Full Body</button>
+          <button class="seg__btn" data-cam="orbit" title="360° Orbit inspection">Orbit</button>
+        </div>
+      </div>
+      <div class="toolbar__group" role="group" aria-label="Lighting themes">
+        <span class="toolbar__label">Atmosphere</span>
+        <div class="swatches" id="seg-theme">
+          <button class="swatch is-active" data-theme="studio" style="--a:#38bdf8;--b:#a855f7"
+            title="Studio"><i></i><span>Studio</span></button>
+          <button class="swatch" data-theme="cyberpunk" style="--a:#ff2e88;--b:#00e5ff"
+            title="Cyber"><i></i><span>Cyber</span></button>
+          <button class="swatch" data-theme="gold" style="--a:#ffcf6b;--b:#ff8a3d"
+            title="Gold"><i></i><span>Gold</span></button>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="tgl-hologram" />
+        <span class="switch__track" aria-hidden="true"><i></i></span>
+        <span class="switch__label">Hologram mode</span>
+      </label>
+      <label class="switch" style="margin-top:0.35rem;">
+        <input type="checkbox" id="tgl-chair" checked />
+        <span class="switch__track" aria-hidden="true" style="--track-active:var(--accent);"><i></i></span>
+        <span class="switch__label">Executive Chair</span>
+      </label>
+      <label class="switch" style="margin-top:0.35rem;">
+        <input type="checkbox" id="tgl-room" checked />
+        <span class="switch__track" aria-hidden="true" style="--track-active:var(--accent);"><i></i></span>
+        <span class="switch__label">3D Studio Room</span>
+      </label>
+      <label class="switch" style="margin-top:0.35rem;">
+        <input type="checkbox" id="tgl-greenscreen" />
+        <span class="switch__track" aria-hidden="true" style="--track-active:#10b981;"><i></i></span>
+        <span class="switch__label">Chroma Key (Green)</span>
+      </label>
+    </aside>
+
+    <!-- ---------- DOCK ---------- -->
+    <nav class="dock glass">
+      <button id="btn-face" class="dock__btn" aria-label="Expression editor"><svg>
+          <use href="#i-face" />
+        </svg><span>Face</span></button>
+      <button id="btn-resume" class="dock__btn" aria-label="Resume & Career Profile"><svg>
+          <use href="#i-resume" />
+        </svg><span>Resume</span></button>
+      <button id="btn-interview" class="dock__btn" aria-label="AI Mock Interview & Assessment"><svg>
+          <use href="#i-code" />
+        </svg><span>Interview</span></button>
+      <button id="btn-career" class="dock__btn" aria-label="Career Discovery Studio"><svg>
+          <use href="#i-compass" />
+        </svg><span>Discovery</span></button>
+      <button id="btn-chat" class="dock__btn is-active" aria-label="Chat"><svg>
+          <use href="#i-chat" />
+        </svg><span>Chat</span></button>
+    </nav>
+
+    <!-- ---------- EXPRESSION & MOTION EDITOR ---------- -->
+    <section id="face-drawer" class="drawer drawer--face glass" aria-label="Expression and Motion editor">
+      <div class="drawer__head">
+        <h2>3D Avatar Studio</h2>
+        <div class="drawer__head-actions">
+          <button id="btn-face-reset" class="icon-btn icon-btn--sm" title="Reset to neutral"><svg>
+              <use href="#i-reset" />
+            </svg></button>
+          <button class="icon-btn icon-btn--sm drawer__close" data-close="face-drawer" title="Close"><svg>
+              <use href="#i-close" />
+            </svg></button>
+        </div>
+      </div>
+      <div class="drawer__body">
+        <p class="drawer__note">Ready Player Me ARKit Rig — <span id="rig-report">calibrating…</span></p>
+
+        <!-- Section: Body Skeletal Animations -->
+        <div class="drawer__subhead">
+          <span class="drawer__section-title">🎭 Skeletal Body Motions</span>
+        </div>
+        <div class="motion-grid" id="motion-grid">
+          <button class="motion-btn is-active" data-motion="Idle">🧘 <b>Idle</b><small>composure</small></button>
+          <button class="motion-btn motion-btn--highlight" data-motion="Standing_Greeting">👋 <b>Greeting</b><small>welcome gesture</small></button>
+          <button class="motion-btn" data-motion="Talking_0">🗣️ <b>Talk 1</b><small>explaining</small></button>
+          <button class="motion-btn" data-motion="Talking_1">🗣️ <b>Talk 2</b><small>gesturing</small></button>
+          <button class="motion-btn" data-motion="Talking_2">🗣️ <b>Talk 3</b><small>storytelling</small></button>
+          <button class="motion-btn" data-motion="Laughing">😂 <b>Laugh</b><small>celebrate</small></button>
+          <button class="motion-btn" data-motion="Crying">😭 <b>Crying</b><small>empathy</small></button>
+          <button class="motion-btn" data-motion="Angry">😡 <b>Angry</b><small>assertive</small></button>
+          <button class="motion-btn" data-motion="Terrified">😱 <b>Terrified</b><small>startled</small></button>
+          <button class="motion-btn motion-btn--highlight" data-motion="Rumba">💃 <b>Rumba</b><small>dance party</small></button>
+        </div>
+
+        <!-- Section: Facial Emotion Expressions -->
+        <div class="drawer__subhead" style="margin-top:1.25rem;">
+          <span class="drawer__section-title">😊 Facial Blendshapes &amp; Emotions</span>
+          <div class="quick-winks">
+            <button id="btn-wink-left" class="pill pill--sm" type="button">😉 Wink Left</button>
+            <button id="btn-wink-right" class="pill pill--sm" type="button">😉 Wink Right</button>
+          </div>
+        </div>
+        <div class="presets" id="preset-grid">
+          <button class="preset is-active" data-expr="neutral"><b>Neutral</b><small>clean composure</small></button>
+          <button class="preset" data-expr="greeting"><b>Greeting</b><small>welcoming smile</small></button>
+          <button class="preset" data-expr="happy"><b>Happy</b><small>warm radiant smile</small></button>
+          <button class="preset" data-expr="confident"><b>Confident</b><small>poised &amp; focused</small></button>
+          <button class="preset" data-expr="thinking"><b>Thinking</b><small>analytical inquiry</small></button>
+          <button class="preset" data-expr="empathetic"><b>Empathetic</b><small>kind &amp; attentive</small></button>
+          <button class="preset" data-expr="surprised"><b>Surprised</b><small>wonder &amp; alert</small></button>
+          <button class="preset" data-expr="smile"><b>Friendly</b><small>gentle subtle grin</small></button>
+          <button class="preset" data-expr="sad"><b>Sad</b><small>soft melancholy</small></button>
+          <button class="preset" data-expr="talking"><b>Talking</b><small>vocal resonance</small></button>
+          <button class="preset" data-expr="funnyFace"><b>Funny Face</b><small>cheek puff &amp; sneer</small></button>
+          <button class="preset" data-expr="angry"><b>Angry</b><small>furrowed brow</small></button>
+          <button class="preset" data-expr="crazy"><b>Crazy</b><small>tongue out &amp; grin</small></button>
+        </div>
+
+        <!-- Section: Dialogue Demos from D:\talk -->
+        <div class="drawer__subhead" style="margin-top:1.25rem;">
+          <span class="drawer__section-title">💬 Studio Audio Lip-Sync Demos</span>
+        </div>
+        <div class="demo-actions" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+          <button id="btn-demo-intro" class="pill pill--accent" type="button">🔊 Play Intro Dialogue</button>
+          <button id="btn-demo-api" class="pill" type="button">⚠️ Play API Warning Demo</button>
+        </div>
+
+        <!-- Section: Fine-Tuning Sliders -->
+        <div class="drawer__subhead" style="margin-top:0.75rem;">
+          <span class="drawer__section-title">🎛️ Anatomical Channel Sliders</span>
+        </div>
+        <div class="sliders" id="slider-grid"><!-- injected --></div>
+        <div class="drawer__foot">
+          <label class="switch switch--sm">
+            <input type="checkbox" id="tgl-autoblink" checked />
+            <span class="switch__track" aria-hidden="true"><i></i></span>
+            <span class="switch__label">Auto blink &amp; idle micro-motion</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RESUME PROFILE ---------- -->
+    <section id="resume-drawer" class="drawer drawer--resume glass" aria-label="Resume & Interview Profile">
+      <div class="drawer__head">
+        <h2>Resume Intelligence</h2>
+        <div class="drawer__head-actions">
+          <button class="icon-btn icon-btn--sm drawer__close" data-close="resume-drawer" title="Close"><svg>
+              <use href="#i-close" />
+            </svg></button>
+        </div>
+      </div>
+      <div id="resume-drawer-body" class="drawer__body resume-body">
+        <!-- Injected by ResumeDrawer -->
+      </div>
+    </section>
+
+    <!-- ---------- CHAT ---------- -->
+    <section id="chat-drawer" class="drawer drawer--chat glass is-open" aria-label="Chat with SIYA">
+      <div class="drawer__head">
+        <h2>Conversation</h2>
+        <div class="drawer__head-actions">
+          <button id="btn-speak" class="icon-btn icon-btn--sm is-on" title="Mute speech" aria-pressed="true"><svg>
+              <use href="#i-sound-on" />
+            </svg></button>
+          <button class="icon-btn icon-btn--sm drawer__close" data-close="chat-drawer" title="Close"><svg>
+              <use href="#i-close" />
+            </svg></button>
+        </div>
+      </div>
+      <div id="messages" class="messages" role="log" aria-live="polite"></div>
+      <div class="suggestions" id="suggestions">
+        <button class="chipbtn">👋 Introduce yourself</button>
+        <button class="chipbtn">🎯 Ask me an interview question</button>
+        <button class="chipbtn">Formal executive mode</button>
+        <button class="chipbtn">📄 Upload resume & start interview</button>
+        <button class="chipbtn">Mock interview arena</button>
+        <button class="chipbtn">JD mock interview</button>
+        <button class="chipbtn">Career discovery studio</button>
+        <button class="chipbtn">Inspect skills</button>
+        <button class="chipbtn">Cyberpunk mode</button>
+        <button class="chipbtn">What can you do?</button>
+      </div>
+      <form id="composer" class="composer" autocomplete="off">
+        <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt,.md,.json,.rtf" style="display:none" />
+        <button type="button" id="btn-upload-resume" class="icon-btn icon-btn--upload"
+          title="Upload resume (PDF, DOCX, TXT)" aria-label="Upload resume"><svg>
+            <use href="#i-upload" />
+          </svg></button>
+        <button type="button" id="btn-mic" class="icon-btn icon-btn--mic" title="Hold a conversation by voice"
+          aria-label="Voice input"><svg>
+            <use href="#i-mic" />
+          </svg></button>
+        <input id="input" class="composer__input" type="text" placeholder="Say something, or ask about your resume…"
+          aria-label="Message" />
+        <button type="submit" id="btn-send" class="icon-btn icon-btn--send" title="Send" aria-label="Send"><svg>
+            <use href="#i-send" />
+          </svg></button>
+      </form>
+    </section>
+
+    <!-- ---------- SETTINGS MODAL ---------- -->
+    <div id="settings" class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="modal__scrim" data-close-modal></div>
+      <div class="modal__panel glass">
+        <div class="drawer__head">
+          <h2 id="settings-title">Settings</h2>
+          <button class="icon-btn icon-btn--sm" data-close-modal title="Close"><svg>
+              <use href="#i-close" />
+            </svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="field">
+            <label for="set-provider">Conversational engine</label>
+            <select id="set-provider">
+              <option value="local">Local engine — offline, no key needed</option>
+              <option value="gemini">Google Gemini</option>
+              <option value="openai">OpenAI</option>
+            </select>
+            <p class="field__hint">The local engine always handles scene commands. Remote engines answer open questions.
+            </p>
+          </div>
+          <div class="field" data-when="gemini">
+            <div class="gemini-secure-card">
+              <div class="gemini-secure-badge">
+                <span class="secure-dot"></span>
+                <span>Gemini API Key Securely Managed</span>
+              </div>
+              <p class="gemini-secure-desc">
+                The Google Gemini API key is isolated on the backend server proxy and is completely hidden from client code, the browser network tab, and localStorage.
+              </p>
+            </div>
+          </div>
+          <div class="field" data-when="openai">
+            <label for="set-key">OpenAI API Key</label>
+            <input id="set-key" type="password" placeholder="Paste OpenAI key (sk-...)" />
+            <p class="field__hint">Stored in <code>localStorage</code> on this device and sent only to OpenAI.</p>
+          </div>
+          <div class="field" data-when="gemini openai">
+            <label for="set-model">Model</label>
+            <input id="set-model" type="text" placeholder="gemini-2.0-flash / gpt-4o-mini" />
+          </div>
+          <div class="field">
+            <label for="set-tts-provider">Voice Speech Engine</label>
+            <select id="set-tts-provider">
+              <option value="elevenlabs" selected>ElevenLabs Neural AI Voice (Studio Quality)</option>
+              <option value="browser">Browser Native Speech (Offline)</option>
+            </select>
+            <p class="field__hint">ElevenLabs generates photorealistic studio-quality speech with real-time lip synchronisation.</p>
+          </div>
+          <div class="field" data-tts="elevenlabs">
+            <div class="gemini-secure-card">
+              <div class="gemini-secure-badge">
+                <span class="secure-dot"></span>
+                <span>ElevenLabs Neural TTS Securely Managed</span>
+              </div>
+              <p class="gemini-secure-desc">
+                Your ElevenLabs API key is securely isolated on the backend server proxy and completely hidden from the client browser, frontend bundles, and network payloads.
+              </p>
+            </div>
+          </div>
+          <div class="field" data-tts="elevenlabs">
+            <label for="set-eleven-voice">ElevenLabs AI Voice Profile</label>
+            <select id="set-eleven-voice">
+              <option value="21m00Tcm4TlvDq8ikWAM">Rachel — Executive & Articulate (Default)</option>
+              <option value="EXAVITQu4vr4xnSDxMaL">Bella — Expressive & Engaging</option>
+              <option value="cgSgspJ2msm6clMCkdW9">Jessica — Technical Architect</option>
+              <option value="XrExE9yKIg1WjnnlVkGX">Matilda — Senior Mentor</option>
+              <option value="pFZP5JQG7iQjIQuC4Bku">Lily — Clear & Polished</option>
+              <option value="FGY2WhTYpPnrIDTdsKH5">Laura — Corporate Strategist</option>
+            </select>
+          </div>
+          <div class="field" data-tts="browser" hidden>
+            <label for="set-voice">Browser Fallback Voice</label>
+            <select id="set-voice">
+              <option value="">Auto — best English voice</option>
+            </select>
+          </div>
+          <div class="field field--row" data-tts="browser" hidden>
+            <div>
+              <label for="set-rate">Rate <span id="out-rate" class="mono">1.02</span></label>
+              <input id="set-rate" type="range" min="0.6" max="1.6" step="0.01" value="1.02" />
+            </div>
+            <div>
+              <label for="set-pitch">Pitch <span id="out-pitch" class="mono">1.02</span></label>
+              <input id="set-pitch" type="range" min="0.5" max="1.8" step="0.01" value="1.02" />
+            </div>
+          </div>
+          <div class="field field--row">
+            <div>
+              <label for="set-quality">Render quality <span id="out-quality" class="mono">High</span></label>
+              <input id="set-quality" type="range" min="1" max="3" step="1" value="3" />
+            </div>
+            <div>
+              <label for="set-particles">Cyber dust <span id="out-particles" class="mono">420</span></label>
+              <input id="set-particles" type="range" min="0" max="900" step="30" value="420" />
+            </div>
+          </div>
+          <div class="field field--row">
+            <div>
+              <label for="set-facelight">Face light <span id="out-facelight" class="mono">0.75</span></label>
+              <input id="set-facelight" type="range" min="0" max="2" step="0.05" value="0.75" />
+            </div>
+            <div>
+              <label for="set-exposure">Exposure <span id="out-exposure" class="mono">0.92</span></label>
+              <input id="set-exposure" type="range" min="0.6" max="1.4" step="0.02" value="0.92" />
+            </div>
+          </div>
+          <div class="modal__actions">
+            <button id="set-test" class="pill">Test voice</button>
+            <button id="set-save" class="pill pill--accent"><svg class="pill__ico">
+                <use href="#i-check" />
+              </svg>Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- DRAG & DROP OVERLAY ---------- -->
+    <div id="drop-overlay" class="drop-overlay" aria-hidden="true">
+      <div class="drop-overlay__box glass">
+        <div class="drop-overlay__icon"><svg>
+            <use href="#i-upload" />
+          </svg></div>
+        <h3>Drop Resume to Analyze</h3>
+        <p>AURA will extract your skills, compute ATS readiness, and prep mock interview questions</p>
+      </div>
+    </div>
+
+    <!-- ---------- AI INTERVIEW ARENA ---------- -->
+    <div id="interview-arena" class="interview-arena" aria-hidden="true"></div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <noscript>
+    <p style="color:#fff;font-family:sans-serif;padding:2rem">AURA needs JavaScript and WebGL enabled.</p>
+  </noscript>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

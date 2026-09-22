@@ -1,0 +1,21 @@
+{
+  "name": "aura-3d-ai-avatar",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AURA — a futuristic, production-ready interactive 3D AI chatbot with a procedurally rigged GLTF avatar, speech lip-sync and voice I/O.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "mammoth": "^1.12.3",
+    "pdfjs-dist": "^6.3.289",
+    "pixel-retroui": "^2.1.0",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}
