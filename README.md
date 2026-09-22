@@ -1,11 +1,8 @@
-# AURA — 3D AI Companion
+# SIYA — 3D AI Career Guidance Mentor
 
-A production-ready, interactive 3D AI chatbot. A GLTF avatar stands on a
-reflective pedestal under a three-point studio rig, talks back with real
-speech, and moves its **actual mesh vertices** to form expressions and
-articulate words — on a model with no skeleton and no morph targets.
+A production-ready, interactive 3D AI Career Guidance Mentor and technical mock interview coach. A 3D avatar with real-time ARKit blendshapes and skeletal gestures stands on a reflective pedestal under an executive studio rig, speaks with ElevenLabs neural audio & browser lip-sync, conducts coding mock interviews with live test runners, analyzes candidate resumes with ATS scoring, and guides tech career roadmaps.
 
-Built with HTML, vanilla CSS, vanilla JavaScript, [Three.js](https://threejs.org) and [Vite](https://vite.dev). No UI framework, no icon library, no CSS framework.
+Built with HTML, vanilla CSS (Taste-Skill obsidian glassmorphism), vanilla JavaScript, [Three.js](https://threejs.org), Google Gemini, and [Vite](https://vite.dev).
 
 ---
 

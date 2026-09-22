@@ -54,11 +54,11 @@ export class ChatView {
     const firstName = user?.firstName || (user?.name ? user.name.split(' ')[0] : null);
     const titleText = firstName
       ? `Welcome back, ${firstName}! I'm Siya.`
-      : "Hi! I'm Siya — Your 3D AI Career Companion";
+      : "Hi! I'm Siya — Your 3D AI Career Guidance Mentor";
 
     const bioText = firstName
       ? `I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. What would you like to prepare for today?`
-      : `I'm an interactive 3D AI companion powered by Google Gemini, real-time facial expressions, and neural speech. I specialize in coaching engineers through mock interviews, analyzing resumes, and guiding tech career growth.`;
+      : `I'm an interactive 3D AI career guidance mentor powered by Google Gemini, real-time facial expressions, and neural speech. I specialize in coaching engineers through mock interviews, analyzing resumes, and guiding tech career growth.`;
 
     const node = el('div', { class: 'msg msg--bot msg--intro-card glass' },
       el('div', { class: 'msg--bot-head' },
@@ -68,7 +68,7 @@ export class ChatView {
       el('div', { class: 'intro-card-header' },
         el('div', { class: 'intro-card-badge' },
           el('span', { class: 'intro-dot' }),
-          document.createTextNode('3D AI COMPANION · ACTIVE')
+          document.createTextNode('3D AI CAREER GUIDANCE MENTOR · ACTIVE')
         ),
         el('div', { class: 'intro-card-tag' }, 'Real-time 3D Avatar')
       ),
@@ -272,7 +272,7 @@ export class ChatView {
     const node = el('div', { class: 'msg msg--bot msg--welcome-card glass' },
       el('div', { class: 'msg--bot-head' },
         el('i', { class: 'msg--bot-dot' }),
-        document.createTextNode('Siya · 3D AI Career Companion')
+        document.createTextNode('Siya · 3D AI Career Guidance Mentor')
       ),
       el('div', { class: 'welcome-card-header' },
         el('div', { class: 'welcome-card-badge' },

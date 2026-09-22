@@ -1,9 +1,9 @@
 {
-  "name": "aura-3d-ai-avatar",
+  "name": "siya-3d-ai-career-guidance-mentor",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "AURA — a futuristic, production-ready interactive 3D AI chatbot with a procedurally rigged GLTF avatar, speech lip-sync and voice I/O.",
+  "description": "SIYA — 3D AI Career Guidance Mentor with real-time 3D avatar expressions, neural voice synthesis, ATS resume analysis, and technical mock interview coaching.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

@@ -24,7 +24,7 @@ const INTENTS = [
     id: 'greet', w: 1.8,
     any: ['hello', 'hi', 'hey', 'heya', 'good morning', 'good afternoon', 'good evening', 'yo', 'greetings', 'howdy', 'namaste', 'hi siya', 'hello siya', 'hey siya', 'hi gesture', 'wave', 'wave hand', 'gesture', 'greeting gesture', 'wave at me', 'say hi', 'hi wave', 'gesture hi', 'greet', 'can you wave', 'wave hello'],
     replies: [
-      "Hello! I'm Siya — your 3D AI career companion and technical mentor. Great to see you! How can I help you today?",
+      "Hello! I'm Siya — your 3D AI Career Guidance Mentor. Great to see you! How can I help you today?",
       "Hey there! I'm Siya, ready for mock interviews, resume critiques, or technical discussions. What would you like to prepare for?",
       "Hi! I'm Siya. My 3D expressions and voice engine are ready. Ask me anything, or let's start a technical interview round!",
     ],
@@ -42,9 +42,9 @@ const INTENTS = [
     id: 'name', w: 2.4,
     any: ['your name', 'who are you', 'what are you', 'what is aura', 'who is siya', 'what is siya', 'who is akshay', 'what is akshay', 'introduce yourself', 'introduce', 'tell me about yourself', 'about yourself', 'who made you', 'start intro', 'start introduction'],
     replies: [
-      "I'm Siya — your interactive 3D AI companion and engineering career mentor powered by Google Gemini. I specialize in conducting mock technical interviews, ATS resume diagnostics, and system design coaching.",
-      "Hello! I am Siya: your 3D AI mentor equipped with real-time facial expressions, neural voice synthesis, live coding challenges, and career discovery roadmaps.",
-      "I'm Siya, your 3D procedural AI companion. I'm here to help you master technical interview rounds, analyze your resume, and level up your engineering career!",
+      "I'm Siya — your interactive 3D AI Career Guidance Mentor powered by Google Gemini. I specialize in conducting mock technical interviews, ATS resume diagnostics, and system design coaching.",
+      "Hello! I am Siya: your 3D AI Career Guidance Mentor equipped with real-time facial expressions, neural voice synthesis, live coding challenges, and career discovery roadmaps.",
+      "I'm Siya, your 3D procedural AI Career Guidance Mentor. I'm here to help you master technical interview rounds, analyze your resume, and level up your engineering career!",
     ],
   },
   {

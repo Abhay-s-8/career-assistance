@@ -274,7 +274,7 @@ export class InterviewArena {
       ),
       el('div', { class: 'arena-body' },
         el('p', { class: 'arena-desc' },
-          'Practice realistic technical & coding rounds with AURA acting as your live avatar interviewer. Get real-time test verification, voice hints, and a full HackerRank-style scorecard.'
+          'Practice realistic technical & coding rounds with Siya acting as your live avatar career mentor. Get real-time test verification, voice hints, and a full HackerRank-style scorecard.'
         ),
 
         // Step 1: Resume Upload Gate
@@ -681,7 +681,7 @@ export class InterviewArena {
 
           // Socratic Hint Button
           el('div', { class: 'arena-hint-box' },
-            el('button', { class: 'pill pill--sm', id: 'btn-arena-hint', type: 'button' }, '💡 Ask AURA for a Hint'),
+            el('button', { class: 'pill pill--sm', id: 'btn-arena-hint', type: 'button' }, '💡 Ask Siya for a Hint'),
             el('p', { class: 'arena-hint-text', id: 'arena-hint-text', style: 'display:none' }, '')
           )
         ),
@@ -783,10 +783,10 @@ export class InterviewArena {
     const hint = challenge.hints?.[0] || 'Focus on breaking down the inputs and considering whether an in-memory hash map can reduce nested loops.';
     const hintEl = $('#arena-hint-text');
     if (hintEl) {
-      hintEl.textContent = `AURA: "${hint}"`;
+      hintEl.textContent = `Siya: "${hint}"`;
       hintEl.style.display = 'block';
     }
-    toast('AURA: ' + hint);
+    toast('Siya: ' + hint);
     if (this.speaker && !this.speaker.muted) {
       this.expressions?.set('thinking');
       this.speaker.speak(hint, this.lip).then(() => {
@@ -1006,7 +1006,7 @@ export class InterviewArena {
       el('div', { class: 'arena-evaluating-box' },
         el('div', { class: 'arena-eval-spinner' }),
         el('h3', {}, 'Evaluating Solution & Articulation…'),
-        el('p', {}, 'AURA is analyzing algorithm efficiency, runtime complexities, verbal pacing, filler words, and STAR delivery.')
+        el('p', {}, 'Siya is analyzing algorithm efficiency, runtime complexities, verbal pacing, filler words, and STAR delivery.')
       )
     );
     on(view, 'click', (e) => e.stopPropagation());

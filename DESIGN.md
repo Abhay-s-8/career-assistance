@@ -1,5 +1,5 @@
 # Stitch Design System Specification
-**Project:** SIYA · 3D AI Career & Engineering Companion  
+**Project:** SIYA · 3D AI Career Guidance Mentor  
 **Theme Name:** Neural Obsidian Glass (Dark Mode — Taste-Skill Aesthetic)  
 **Version:** 2.0.0  
 **Specification File:** `DESIGN.md`
@@ -115,7 +115,7 @@ The **SIYA Design System** merges a high-performance **3D WebGL stage** with a *
 
 ### 5.1 Topbar Navigation
 * **Structure:** Fixed floating header, `height: 60px`, `backdrop-filter: blur(24px)`.
-* **Left:** Brand logo with glowing emerald/cyan animated orb and title `SIYA · 3D AI Companion`.
+* **Left:** Brand logo with glowing emerald/cyan animated orb and title `SIYA · 3D AI Career Guidance Mentor`.
 * **Right:** User auth chip, AI model status badge (`Gemini 2.5 Flash`), operational state chip (`Idle / Speaking / Listening / Thinking`), settings button, and fullscreen trigger.
 
 ### 5.2 Floating Dock
@@ -126,7 +126,7 @@ The **SIYA Design System** merges a high-performance **3D WebGL stage** with a *
 ### 5.3 Bento Introduction & Message Cards
 * **Geometry:** `border-radius: 16px`, `padding: 14px 16px`.
 * **Top Accent:** 3px animated multi-color neon gradient bar (`#00e5ff` → `#a855f7` → `#10b981`).
-* **Badge:** Pulsing status dot + uppercase label `3D AI COMPANION · ACTIVE`.
+* **Badge:** Pulsing status dot + uppercase label `3D AI CAREER GUIDANCE MENTOR · ACTIVE`.
 * **Features Grid:** 2-column Bento grid highlighting key capabilities (Mock Interviews, Resume Intelligence, Career Discovery, 3D Voice).
 * **Action Pills:** Primary accented chip buttons with tactile push feedback (`:active { transform: scale(0.98); }`).
 

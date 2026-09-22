@@ -1086,8 +1086,8 @@ async function boot() {
       const cur = auth.getUser();
       const userFirstName = cur?.firstName || (cur?.name ? cur.name.split(' ')[0] : null);
       const introText = userFirstName
-        ? `Welcome, ${userFirstName}! I am Siya — your 3D AI companion and engineering career mentor powered by Google Gemini. I combine real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence. I'm here to run mock interview rounds, analyze your resume with ATS scoring, and guide your software career growth. What would you like to prepare for today?`
-        : `Hello! I am Siya — your 3D AI companion and engineering career mentor powered by Google Gemini. Equipped with real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence, I specialize in conducting mock technical interviews, reviewing resumes with ATS diagnostics, and guiding your career roadmap. Feel free to speak with your voice or type in the chat below!`;
+        ? `Welcome, ${userFirstName}! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. I combine real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence. I'm here to run mock interview rounds, analyze your resume with ATS scoring, and guide your software career growth. What would you like to prepare for today?`
+        : `Hello! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. Equipped with real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence, I specialize in conducting mock technical interviews, reviewing resumes with ATS diagnostics, and guiding your career roadmap. Feel free to speak with your voice or type in the chat below!`;
       
       chat.addSiyaIntroductionCard({
         user: cur,
@@ -1169,10 +1169,10 @@ async function boot() {
       const userFirstName = cur?.firstName || (cur?.name ? cur.name.split(' ')[0] : null);
       const isExplicitWave = isWaveReq || /(wave|gesture)/i.test(message);
       const greetingText = isExplicitWave
-        ? (userFirstName ? `*Waves warmly* Hello, ${userFirstName}! It's great to see you. Ready to practice technical interviews, explore system architecture, or review your resume?` : `*Waves warmly* Hello! I am Siya — your 3D AI companion and engineering career mentor. How can I help you today? Feel free to ask technical questions, practice mock interviews, or upload your resume!`)
+        ? (userFirstName ? `*Waves warmly* Hello, ${userFirstName}! It's great to see you. Ready to practice technical interviews, explore system architecture, or review your resume?` : `*Waves warmly* Hello! I am Siya — your 3D AI Career Guidance Mentor. How can I help you today? Feel free to ask technical questions, practice mock interviews, or upload your resume!`)
         : (userFirstName
-          ? `Hello, ${userFirstName}! Great to see you. I am Siya, your 3D AI companion and engineering career mentor. What would you like to prepare for today? We can practice a mock interview, review your resume with ATS scoring, or explore system architecture!`
-          : `Hello! I am Siya — your 3D AI companion and engineering career mentor powered by Google Gemini. How can I help you today? Feel free to ask me technical interview questions, upload your resume for ATS scoring, or explore live coding challenges!`);
+          ? `Hello, ${userFirstName}! Great to see you. I am Siya, your 3D AI Career Guidance Mentor. What would you like to prepare for today? We can practice a mock interview, review your resume with ATS scoring, or explore system architecture!`
+          : `Hello! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. How can I help you today? Feel free to ask me technical interview questions, upload your resume for ATS scoring, or explore live coding challenges!`);
       
       const providerLabel = remoteBrain.configured ? `Google Gemini (${(remoteBrain.model || 'gemini-2.5-flash').replace('gemini-', '')})` : 'Google Gemini AI';
       chat.add('bot', greetingText, null, { provider: providerLabel });
@@ -1765,8 +1765,8 @@ Keep it conversational, inspiring, and concise.`;
   const firstName = curUser?.firstName || (curUser?.name ? curUser.name.split(' ')[0] : null);
 
   const spokenIntro = firstName
-    ? `Welcome back, ${firstName}! I am Siya, your 3D AI companion and engineering career mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. What would you like to prepare for today?`
-    : `Hello! I am Siya — your 3D AI companion and engineering career mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. Feel free to speak with your voice or type in the chat below. How can I help you today?`;
+    ? `Welcome back, ${firstName}! I am Siya, your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. What would you like to prepare for today?`
+    : `Hello! I am Siya — your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. Feel free to speak with your voice or type in the chat below. How can I help you today?`;
 
   let introHasSpoken = false;
   const playIntroSpeech = () => {
@@ -1799,7 +1799,7 @@ Keep it conversational, inspiring, and concise.`;
     speaker.speak(spokenIntro, lip).then(() => {
       finishGreeting();
     }).catch((err) => {
-      console.warn('[AURA] Intro speech note:', err);
+      console.warn('[SIYA] Intro speech note:', err);
       finishGreeting();
     });
   };
@@ -1858,8 +1858,9 @@ Keep it conversational, inspiring, and concise.`;
   if (!sttSupported) chat.system('Note —', 'voice input needs Chrome or Edge');
   setState('idle');
 
-  // Expose a small handle for debugging without polluting the UI.
-  window.AURA = { stage, avatar, rig, expressions, lip, cavity, speaker, mic, send, updateModelBadge, auth, authModal };
+  // Expose a debug handle on window for introspection
+  window.SIYA = { stage, avatar, rig, expressions, lip, cavity, speaker, mic, send, updateModelBadge, auth, authModal };
+  window.AURA = window.SIYA;
 }
 
 const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
