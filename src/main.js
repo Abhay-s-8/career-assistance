@@ -1089,43 +1089,11 @@ async function boot() {
         ? `Hi, ${userFirstName}! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. I combine real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence. I'm here to run mock interview rounds, analyze your resume with ATS scoring, and guide your software career growth. What would you like to prepare for today?`
         : `Hi! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. Equipped with real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence, I specialize in conducting mock technical interviews, reviewing resumes with ATS diagnostics, and guiding your career roadmap. Feel free to speak with your voice or type in the chat below!`;
       
-      chat.addSiyaIntroductionCard({
-        user: cur,
-        onAction: (prompt) => send(prompt),
-        onSpeakIntro: () => {
-          speaker.cancel();
-          expressions.set('greeting');
-          face.markPreset('greeting');
-          avatar?.playAnimation('Standing_Greeting', 0.25, false);
-          face.markMotion('Standing_Greeting');
-          const t0 = performance.now();
-          const doneGreeting = () => {
-            const rem = Math.max(0, 4500 - (performance.now() - t0));
-            setTimeout(() => {
-              expressions.set('neutral');
-              face.markPreset('neutral');
-              avatar?.playAnimation('Idle', 0.5);
-              face.markMotion('Idle');
-            }, rem);
-          };
-          if (!speaker.muted && ttsSupported) {
-            speaker.speak(introText, lip).finally(() => {
-              doneGreeting();
-            });
-          } else {
-            doneGreeting();
-          }
-        },
-        onVoice: () => toggleMic(),
-        onResumeDrawer: () => shell.openDrawer('resume'),
-        onInterview: () => {
-          if (activeResume) {
-            interviewArena.open();
-          } else {
-            askToUploadResumeFirst('interview');
-          }
-        }
-      });
+      const introMd = userFirstName
+        ? `### 👋 Welcome back, ${userFirstName}! I'm Siya.\n\nI am your **3D AI Career Guidance Mentor** powered by **Google Gemini 3.6 Flash**, real-time 3D facial expressions, and neural speech.\n\n* 🎯 **AI Mock Interviews** — Live coding arena, algorithmic challenges & system design\n* 📄 **Resume Intelligence** — ATS scoring, keyword optimization & skill gap audit\n* 🧭 **Career Discovery** — Engineering level benchmarks & progression roadmaps\n* 🎙️ **Voice & Lip-Sync** — Real-time conversational interview sessions\n\nWhat would you like to prepare for today?`
+        : `### 👋 Hi! I'm Siya — 3D AI Career Guidance Mentor\n\nI specialize in coaching engineers through mock interviews, analyzing resumes with ATS scoring, and guiding software career progression.\n\n* 🎯 **AI Mock Interviews** — Real-time coding arena & technical questions\n* 📄 **Resume Intelligence** — ATS scoring & skill audit\n* 🧭 **Career Discovery** — Progression benchmarks & salary insights\n* 🎙️ **Conversational Voice** — Hands-free audio interview sessions\n\nFeel free to type in the chat below, click any quick action, or tap the microphone to speak!`;
+
+      chat.add('bot', introMd, null, { provider: 'Google Gemini 3.6 Flash' });
 
       const startTime = performance.now();
       const finishGreeting = () => {

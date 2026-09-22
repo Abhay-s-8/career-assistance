@@ -99,12 +99,41 @@ function renderMarkdown(md) {
 export class ChatView {
   constructor() {
     this.list = $('#messages');
+    this.drawer = $('#chat-drawer');
+    this.expandBtn = $('#btn-chat-expand');
     this._typing = null;
+
+    if (this.expandBtn && this.drawer) {
+      this.expandBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleExpand();
+      });
+    }
+  }
+
+  toggleExpand(force) {
+    if (!this.drawer) return;
+    const isExp = typeof force === 'boolean' ? force : !this.drawer.classList.contains('is-expanded');
+    this.drawer.classList.toggle('is-expanded', isExp);
+    if (this.expandBtn) {
+      this.expandBtn.title = isExp ? 'Collapse chat size' : 'Expand chat size';
+      this.expandBtn.setAttribute('aria-label', isExp ? 'Collapse chat' : 'Expand chat');
+      const use = this.expandBtn.querySelector('use');
+      if (use) use.setAttribute('href', isExp ? '#i-collapse' : '#i-expand');
+    }
+    this._scroll();
   }
 
   _scroll() {
-    // rAF so the node is laid out before we measure.
-    requestAnimationFrame(() => { this.list.scrollTop = this.list.scrollHeight; });
+    // Immediate rAF layout measure
+    requestAnimationFrame(() => {
+      if (this.list) this.list.scrollTop = this.list.scrollHeight;
+    });
+    // Follow-up after dynamic rendering / animations settle
+    setTimeout(() => {
+      if (this.list) this.list.scrollTop = this.list.scrollHeight;
+    }, 60);
   }
 
   add(role, text, authorName, meta = {}) {
