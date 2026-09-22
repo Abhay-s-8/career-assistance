@@ -1086,8 +1086,8 @@ async function boot() {
       const cur = auth.getUser();
       const userFirstName = cur?.firstName || (cur?.name ? cur.name.split(' ')[0] : null);
       const introText = userFirstName
-        ? `Welcome, ${userFirstName}! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. I combine real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence. I'm here to run mock interview rounds, analyze your resume with ATS scoring, and guide your software career growth. What would you like to prepare for today?`
-        : `Hello! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. Equipped with real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence, I specialize in conducting mock technical interviews, reviewing resumes with ATS diagnostics, and guiding your career roadmap. Feel free to speak with your voice or type in the chat below!`;
+        ? `Hi, ${userFirstName}! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. I combine real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence. I'm here to run mock interview rounds, analyze your resume with ATS scoring, and guide your software career growth. What would you like to prepare for today?`
+        : `Hi! I am Siya — your 3D AI Career Guidance Mentor powered by Google Gemini. Equipped with real-time 3D facial expressions, ElevenLabs neural voice synthesis, and deep Gemini intelligence, I specialize in conducting mock technical interviews, reviewing resumes with ATS diagnostics, and guiding your career roadmap. Feel free to speak with your voice or type in the chat below!`;
       
       chat.addSiyaIntroductionCard({
         user: cur,
@@ -1096,11 +1096,11 @@ async function boot() {
           speaker.cancel();
           expressions.set('greeting');
           face.markPreset('greeting');
-          avatar?.playAnimation('Standing_Greeting', 0.4, false);
+          avatar?.playAnimation('Standing_Greeting', 0.25, false);
           face.markMotion('Standing_Greeting');
           const t0 = performance.now();
           const doneGreeting = () => {
-            const rem = Math.max(0, 4200 - (performance.now() - t0));
+            const rem = Math.max(0, 4500 - (performance.now() - t0));
             setTimeout(() => {
               expressions.set('neutral');
               face.markPreset('neutral');
@@ -1129,7 +1129,7 @@ async function boot() {
 
       const startTime = performance.now();
       const finishGreeting = () => {
-        const remaining = Math.max(0, 4000 - (performance.now() - startTime));
+        const remaining = Math.max(0, 4500 - (performance.now() - startTime));
         setTimeout(() => {
           expressions.set('neutral');
           face.markPreset('neutral');
@@ -1765,18 +1765,18 @@ Keep it conversational, inspiring, and concise.`;
   const firstName = curUser?.firstName || (curUser?.name ? curUser.name.split(' ')[0] : null);
 
   const spokenIntro = firstName
-    ? `Welcome back, ${firstName}! I am Siya, your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. What would you like to prepare for today?`
-    : `Hello! I am Siya — your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. Feel free to speak with your voice or type in the chat below. How can I help you today?`;
+    ? `Hi, ${firstName}! I am Siya, your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. What would you like to prepare for today?`
+    : `Hi! I am Siya — your 3D AI Career Guidance Mentor. I'm ready to conduct mock technical interviews, review your resume with ATS scoring, or explore system architecture. Feel free to speak with your voice or type in the chat below. How can I help you today?`;
 
   let introHasSpoken = false;
   const playIntroSpeech = () => {
     introHasSpoken = true;
     expressions.set('greeting');
     face.markPreset('greeting');
-    avatar?.playAnimation('Standing_Greeting', 0.4, false);
+    avatar?.playAnimation('Standing_Greeting', 0.25, false);
     face.markMotion('Standing_Greeting');
 
-    const minGreetingDuration = 4200;
+    const minGreetingDuration = 4500;
     const startTime = performance.now();
 
     const finishGreeting = () => {
