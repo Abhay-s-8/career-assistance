@@ -5477,7 +5477,6 @@ select:-webkit-autofill {
 
 /* Retro Introduction Card */
 [data-theme='retro'] .siya-intro-card,
-[data-theme='retro'] .akshay-intro-card,
 [data-theme='retro'] .msg--intro-card {
   border-radius: 0 !important;
   border: 2px solid #ffe600 !important;
@@ -5485,7 +5484,6 @@ select:-webkit-autofill {
 }
 
 [data-theme='retro'] .siya-intro-card::before,
-[data-theme='retro'] .akshay-intro-card::before,
 [data-theme='retro'] .msg--intro-card::before {
   height: 4px;
   background: linear-gradient(90deg, #ffe600, #ff0055, #00ff88);

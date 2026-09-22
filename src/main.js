@@ -1073,7 +1073,7 @@ async function boot() {
       return;
     }
 
-    const isIntroReq = /^(introduce yourself|introduce|who are you|what is your name|who is siya|what is siya|who is akshay|what is akshay|tell me about yourself|about yourself|start intro|start introduction|give your introduction|siya intro|your intro|intro|welcome)$/i.test(message)
+    const isIntroReq = /^(introduce yourself|introduce|who are you|what is your name|who is siya|what is siya|tell me about yourself|about yourself|start intro|start introduction|give your introduction|siya intro|your intro|intro|welcome)$/i.test(message)
       || /(introduce yourself|tell me about yourself|give (me )?(your )?introduction|speak your intro|what is your role|who are you)/i.test(message);
 
     if (isIntroReq) {

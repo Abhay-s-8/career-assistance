@@ -41,7 +41,7 @@ export class SpeechInput extends EventTarget {
       this._emit('error', {
         code: err?.name === 'NotAllowedError' ? 'denied' : 'mic',
         message: err?.name === 'NotAllowedError'
-          ? 'Microphone permission was blocked. Allow it in the address bar to talk to AURA.'
+          ? 'Microphone permission was blocked. Allow it in the address bar to talk to Siya.'
           : 'No microphone was available.',
       });
       return;

@@ -40,7 +40,7 @@ const INTENTS = [
   },
   {
     id: 'name', w: 2.4,
-    any: ['your name', 'who are you', 'what are you', 'what is aura', 'who is siya', 'what is siya', 'who is akshay', 'what is akshay', 'introduce yourself', 'introduce', 'tell me about yourself', 'about yourself', 'who made you', 'start intro', 'start introduction'],
+    any: ['your name', 'who are you', 'what are you', 'who is siya', 'what is siya', 'introduce yourself', 'introduce', 'tell me about yourself', 'about yourself', 'who made you', 'start intro', 'start introduction'],
     replies: [
       "I'm Siya — your interactive 3D AI Career Guidance Mentor powered by Google Gemini. I specialize in conducting mock technical interviews, ATS resume diagnostics, and system design coaching.",
       "Hello! I am Siya: your 3D AI Career Guidance Mentor equipped with real-time facial expressions, neural voice synthesis, live coding challenges, and career discovery roadmaps.",
