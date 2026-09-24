@@ -77,6 +77,10 @@
       <path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.9"
         stroke-linecap="round" stroke-linejoin="round" />
     </symbol>
+    <symbol id="i-studio" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3" fill="currentColor"/>
+      <path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2.1 2.1m-8.8 8.8-2.1 2.1m0-13 2.1 2.1m8.8 8.8 2.1 2.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
     <symbol id="i-upload" viewBox="0 0 24 24">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" fill="none" stroke="currentColor"
         stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
@@ -173,6 +177,7 @@
         </div>
         <div id="model-chip" class="chip chip--model" title="AI Model — Click to configure"><i class="chip__dot"></i><span id="model-label">Gemini (3.6 Flash)</span></div>
         <div id="state-chip" class="chip" data-state="idle"><i class="chip__dot"></i><span id="state-label">Idle</span></div>
+        <button id="btn-toggle-toolbar" class="icon-btn toolbar-toggle-btn" title="Studio Atmosphere & Camera Controls" aria-label="Toggle studio scene controls"><svg><use href="#i-studio" /></svg></button>
         <button id="btn-settings" class="icon-btn" title="API & voice settings" aria-label="Settings"><svg>
             <use href="#i-gear" />
           </svg></button>
@@ -197,7 +202,11 @@
     </div>
 
     <!-- ---------- SCENE TOOLBAR ---------- -->
-    <aside class="toolbar glass">
+    <aside class="toolbar glass" id="scene-toolbar">
+      <div class="toolbar__mobile-head">
+        <span class="toolbar__mobile-title">Studio Scene & Atmosphere</span>
+        <button class="icon-btn icon-btn--sm toolbar-close-btn" id="btn-toolbar-close" title="Close"><svg><use href="#i-close" /></svg></button>
+      </div>
       <div class="toolbar__group" role="group" aria-label="Camera presets">
         <span class="toolbar__label">Camera</span>
         <div class="seg" id="seg-camera">

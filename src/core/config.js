@@ -523,7 +523,7 @@ export const LIPSYNC = {
   closureHold: 0.055,
 };
 
-export const DUST_COUNT_DEFAULT = 420;
+export const DUST_COUNT_DEFAULT = 0;
 
 export const STORAGE_KEY = 'aura.settings.v1';
 

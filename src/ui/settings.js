@@ -17,7 +17,7 @@ const DEFAULTS = {
   rate: 1.0,
   pitch: 1.0,
   quality: 3,
-  particles: 420,
+  particles: 0,
   faceLight: 0.85,
   exposure: 0.95,
   muted: false,
@@ -30,6 +30,11 @@ export function loadSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     const s = { ...DEFAULTS, ...saved };
+
+    // Default glitter/particles to 0
+    if (saved.particles === undefined || saved.particles === 420) {
+      s.particles = 0;
+    }
 
     // Never store or load Gemini API key in frontend
     if (s.provider === 'gemini' || !s.provider || s.provider === 'local') {
