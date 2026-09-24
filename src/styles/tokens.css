@@ -72,12 +72,10 @@
   --font-code: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* --- Layout & Safety Margins --- */
-  --gutter: clamp(10px, 2.5vw, 20px);
-  --safe-t: max(var(--gutter), env(safe-area-inset-top, 0px));
-  --safe-b: max(var(--gutter), env(safe-area-inset-bottom, 0px));
-  --safe-l: max(var(--gutter), env(safe-area-inset-left, 0px));
-  --safe-r: max(var(--gutter), env(safe-area-inset-right, 0px));
-  --topbar-h: 56px;
+  --gutter: 20px;
+  --safe-t: max(var(--gutter), env(safe-area-inset-top));
+  --safe-b: max(var(--gutter), env(safe-area-inset-bottom));
+  --topbar-h: 60px;
 }
 
 /* --- Curated Theme Presets --- */
