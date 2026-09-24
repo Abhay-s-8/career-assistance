@@ -119,8 +119,13 @@ export class Speaker extends EventTarget {
 
     if (!clean) return false;
 
-    // 1. Attempt ElevenLabs Neural Voice via secure backend proxy
-    if (this.ttsProvider === 'elevenlabs' && this.elevenSpeaker) {
+    // 1. Attempt ElevenLabs Neural Voice if valid key is configured
+    const hasValidElevenKey = !!(
+      this.elevenSpeaker?.apiKey &&
+      (this.elevenSpeaker.apiKey.startsWith('sk_') || this.elevenSpeaker.apiKey.startsWith('sk-'))
+    );
+
+    if (this.ttsProvider === 'elevenlabs' && this.elevenSpeaker && hasValidElevenKey) {
       try {
         const ok = await this.elevenSpeaker.speak(clean, lip);
         if (ok) return true;
@@ -143,12 +148,6 @@ export class Speaker extends EventTarget {
       });
     }
 
-    // Cancel previous speech only if currently speaking or pending
-    if (synth.speaking || synth.pending) {
-      try { synth.cancel(); } catch { /* noop */ }
-      await new Promise((r) => setTimeout(r, 40));
-    }
-
     if (synth.paused) {
       try { synth.resume(); } catch { /* noop */ }
     }
@@ -167,8 +166,8 @@ export class Speaker extends EventTarget {
     } else {
       u.lang = 'en-US';
     }
-    u.rate = Math.max(0.75, Math.min(1.3, this.rate || 1.0));
-    u.pitch = Math.max(0.75, Math.min(1.3, this.pitch || 1.0));
+    u.rate = Math.max(0.8, Math.min(1.25, this.rate || 1.0));
+    u.pitch = Math.max(0.8, Math.min(1.2, this.pitch || 1.0));
     u.volume = 1.0;
 
     u.onboundary = (e) => {
@@ -196,7 +195,7 @@ export class Speaker extends EventTarget {
       };
 
       // Watchdog timeout based on length (10 chars/sec + 4s buffer)
-      const maxTime = Math.max(4500, (clean.length / 10) * 1000 + 4000);
+      const maxTime = Math.max(4500, (clean.length / 8) * 1000 + 4000);
       const watchdog = setTimeout(() => {
         if (!settled && this.speaking) {
           finishAndResolve(true);
@@ -215,7 +214,7 @@ export class Speaker extends EventTarget {
       u.onerror = (e) => {
         console.warn('[AURA TTS] Utterance note:', e.error || e);
         if ((e.error === 'network' || e.error === 'voice-unavailable' || e.error === 'language-unavailable') && u.voice) {
-          // Retry immediately with local default voice
+          // Retry immediately with system default voice
           const retryU = new SpeechSynthesisUtterance(clean);
           retryU.lang = 'en-US';
           retryU.volume = 1.0;
@@ -227,6 +226,7 @@ export class Speaker extends EventTarget {
           window._auraActiveUtterances = [retryU];
           try {
             synth.speak(retryU);
+            if (synth.paused) synth.resume();
             return;
           } catch { /* noop */ }
         }

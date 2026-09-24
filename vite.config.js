@@ -73,10 +73,11 @@ function apiProxyPlugin(serverGeminiKey, serverElevenKey) {
 
     // --- ElevenLabs Status ---
     if (url.pathname === '/api/elevenlabs/status' && req.method === 'GET') {
+      const isValid = !!(serverElevenKey && (serverElevenKey.startsWith('sk_') || serverElevenKey.startsWith('sk-')));
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({
-        available: !!serverElevenKey,
+        available: isValid,
         provider: 'elevenlabs',
       }));
       return;

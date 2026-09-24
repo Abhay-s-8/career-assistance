@@ -48,8 +48,11 @@ export class LipSync {
     this.active = true;
     this.word = '';
     this._cues = null;
-    this._queue = [];
+    const words = (text || '').match(/[A-Za-z']+/g) || [];
+    this._queue = words.flatMap((w) => visemesFor(w.toLowerCase()));
+    if (!this._queue.length) this._queue = ['AA', 'EE', 'OH', 'MBP'];
     this._qi = 0;
+    this._hold = 0;
     this._t = 0;
     this.out.activeViseme = 'rest';
   }

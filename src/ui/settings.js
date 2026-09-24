@@ -10,7 +10,7 @@ const DEFAULTS = {
   provider: 'gemini',
   apiKey: '',
   model: 'gemini-3.6-flash',
-  ttsProvider: 'elevenlabs',
+  ttsProvider: 'browser',
   elevenApiKey: '',
   elevenVoiceId: ELEVENLABS_VOICES[0].id,
   voiceURI: '',
@@ -44,13 +44,14 @@ export function loadSettings() {
       s.model = 'gemini-3.6-flash';
     }
 
-    // ElevenLabs runs via secure backend proxy
+    // Default to browser speech unless user specifically configured ElevenLabs with a key
+    if (!s.ttsProvider || (s.ttsProvider === 'elevenlabs' && !s.elevenApiKey?.startsWith('sk_'))) {
+      s.ttsProvider = 'browser';
+    }
+
     s.elevenApiKey = '';
     if (!s.elevenVoiceId) {
       s.elevenVoiceId = ELEVENLABS_VOICES[0].id;
-    }
-    if (!s.ttsProvider) {
-      s.ttsProvider = 'elevenlabs';
     }
 
     saveSettings(s);

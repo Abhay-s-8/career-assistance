@@ -47,21 +47,16 @@ export class ElevenLabsSpeaker extends EventTarget {
    */
   async speak(text, lip = null) {
     if (!text || !text.trim()) return false;
-    this.cancel();
 
     const voiceId = this.voiceId || ELEVENLABS_VOICES[0].id;
     const cacheKey = `${voiceId}_${text.trim()}`;
-
-    this.speaking = true;
-    this._emit('start', { text });
-    lip?.start(text, 1.0);
 
     this._abortController = new AbortController();
     const timeoutId = setTimeout(() => {
       if (this._abortController) {
         this._abortController.abort();
       }
-    }, 8500);
+    }, 6000);
 
     try {
       let arrayBuffer;
@@ -130,12 +125,12 @@ export class ElevenLabsSpeaker extends EventTarget {
 
       const audioBuffer = await ctx.decodeAudioData(arrayBuffer.slice(0));
 
-      return await new Promise((resolve) => {
-        if (!this.speaking) {
-          resolve(false);
-          return;
-        }
+      this.cancel();
+      this.speaking = true;
+      this._emit('start', { text });
+      lip?.start(text, 1.0);
 
+      return await new Promise((resolve) => {
         const source = ctx.createBufferSource();
         source.buffer = audioBuffer;
 
@@ -208,7 +203,9 @@ export class ElevenLabsSpeaker extends EventTarget {
       clearTimeout(timeoutId);
       console.warn('[ElevenLabs TTS]', err.message || err);
       cancelAnimationFrame(this._rafId);
-      this._finish(lip);
+      this.speaking = false;
+      this.currentSource = null;
+      this.analyser = null;
       this._emit('error', { error: err });
       throw err;
     }
