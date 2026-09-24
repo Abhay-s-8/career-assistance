@@ -45,8 +45,15 @@ export class Shell {
       });
     }
 
-    // Close any open side drawer when clicking anywhere outside of it
+    // Close any open side drawer or mobile toolbar when clicking anywhere outside of it
     on(document, 'pointerdown', (e) => {
+      // Close mobile toolbar if clicked outside
+      if (this.toolbar?.classList.contains('is-mobile-open')) {
+        if (!this.toolbar.contains(e.target) && !e.target.closest('#btn-toggle-toolbar')) {
+          this.closeMobileToolbar();
+        }
+      }
+
       const openKey = Object.keys(this.drawers).find((k) => this.isOpen(k));
       if (!openKey) return;
 
@@ -56,6 +63,9 @@ export class Shell {
 
       // If clicked on dock buttons, let dock handlers manage toggling
       if (e.target.closest('.dock')) return;
+
+      // If clicked on toolbar toggle or toolbar itself
+      if (e.target.closest('.toolbar, #btn-toggle-toolbar')) return;
 
       // If clicked on modals / full overlays, let modal handlers manage themselves
       if (e.target.closest('.modal, .career-modal-backdrop, .interview-arena, .drawer--profile, #profile-backdrop')) return;
@@ -69,6 +79,7 @@ export class Shell {
   }
 
   openDrawer(name) {
+    this.closeMobileToolbar();
     for (const [k, node] of Object.entries(this.drawers)) {
       const open = k === name;
       node.classList.toggle('is-open', open);
@@ -93,8 +104,29 @@ export class Shell {
 
   /* --------------------------------------------------------- toolbar */
   _wireToolbar() {
+    this.toolbar = $('#scene-toolbar') || $('.toolbar');
+    this.btnToggleToolbar = $('#btn-toggle-toolbar');
+    this.btnToolbarClose = $('#btn-toolbar-close');
+
+    if (this.btnToggleToolbar) {
+      on(this.btnToggleToolbar, 'click', (e) => {
+        e.stopPropagation();
+        this.toggleMobileToolbar();
+      });
+    }
+
+    if (this.btnToolbarClose) {
+      on(this.btnToolbarClose, 'click', (e) => {
+        e.stopPropagation();
+        this.closeMobileToolbar();
+      });
+    }
+
     for (const btn of $$('#seg-camera .seg__btn')) {
-      on(btn, 'click', () => this.h.onCamera?.(btn.dataset.cam));
+      on(btn, 'click', () => {
+        this.h.onCamera?.(btn.dataset.cam);
+        if (window.innerWidth <= 768) this.closeMobileToolbar();
+      });
     }
     for (const btn of $$('#seg-theme .swatch')) {
       on(btn, 'click', () => this.h.onTheme?.(btn.dataset.theme));
@@ -104,6 +136,25 @@ export class Shell {
     if (chairSwitch) on(chairSwitch, 'change', (e) => this.h.onChair?.(e.target.checked));
     const roomSwitch = $('#tgl-room');
     if (roomSwitch) on(roomSwitch, 'change', (e) => this.h.onRoom?.(e.target.checked));
+  }
+
+  toggleMobileToolbar() {
+    const isOpen = this.toolbar?.classList.contains('is-mobile-open');
+    if (isOpen) {
+      this.closeMobileToolbar();
+    } else {
+      this.openMobileToolbar();
+    }
+  }
+
+  openMobileToolbar() {
+    this.toolbar?.classList.add('is-mobile-open');
+    this.btnToggleToolbar?.classList.add('is-on');
+  }
+
+  closeMobileToolbar() {
+    this.toolbar?.classList.remove('is-mobile-open');
+    this.btnToggleToolbar?.classList.remove('is-on');
   }
 
   markCamera(name) {

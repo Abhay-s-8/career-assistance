@@ -372,7 +372,14 @@ export class Stage {
     const q = QUALITY[this.quality] || QUALITY[3];
     this.renderer.setPixelRatio(Math.min(q.dpr, window.devicePixelRatio || 1));
     this.renderer.setSize(w, h, false);
-    this.camera.aspect = w / h;
+    const aspect = w / h;
+    this.camera.aspect = aspect;
+    if (this.cameraRig) {
+      const p = this.cameraRig.presets[this.cameraRig.current];
+      if (p) {
+        this.camera.fov = this.cameraRig.getResponsiveFov(p.fov);
+      }
+    }
     this.camera.updateProjectionMatrix();
     if (this.dust) {
       this.dust.material.uniforms.uPixelRatio.value = this.renderer.getPixelRatio();

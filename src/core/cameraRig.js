@@ -70,6 +70,15 @@ export class CameraRig {
     this.apply(this.current, true);
   }
 
+  getResponsiveFov(baseFov) {
+    const aspect = (this.camera.aspect && this.camera.aspect > 0) ? this.camera.aspect : (window.innerWidth / (window.innerHeight || 1));
+    if (aspect < 0.95) {
+      // On narrow portrait screens, expand vertical FOV proportionally so upper body isn't clipped
+      return baseFov * Math.min(1.36, Math.max(1.0, 0.74 / aspect));
+    }
+    return baseFov;
+  }
+
   apply(name, instant = false) {
     const p = this.presets[name];
     if (!p) return this.current;
@@ -77,6 +86,7 @@ export class CameraRig {
 
     const toPos = new THREE.Vector3(...p.pos);
     const toTgt = new THREE.Vector3(...p.lookAt);
+    const targetFov = this.getResponsiveFov(p.fov);
 
     this.controls.minDistance = p.minDistance;
     this.controls.maxDistance = p.maxDistance;
@@ -86,7 +96,7 @@ export class CameraRig {
     if (instant) {
       this.camera.position.copy(toPos);
       this.controls.target.copy(toTgt);
-      this.camera.fov = p.fov;
+      this.camera.fov = targetFov;
       this.camera.updateProjectionMatrix();
       this.controls.update();
       this._tween = null;
@@ -101,7 +111,7 @@ export class CameraRig {
       fromTgt: this.controls.target.clone(),
       toTgt,
       fromFov: this.camera.fov,
-      toFov: p.fov,
+      toFov: targetFov,
     };
     return name;
   }

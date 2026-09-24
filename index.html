@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
   <meta name="theme-color" content="#05070f" />
   <meta name="description"
     content="SIYA — 3D AI Career Guidance Mentor with real-time facial expressions, neural speech lip-sync, ATS resume analysis, and technical mock interviews." />
@@ -52,6 +52,11 @@
       <path
         d="M19.4 13.6a1.5 1.5 0 0 0 .3 1.65l.05.05a1.8 1.8 0 1 1-2.55 2.55l-.05-.05a1.5 1.5 0 0 0-1.65-.3 1.5 1.5 0 0 0-.9 1.37V19a1.8 1.8 0 1 1-3.6 0v-.08a1.5 1.5 0 0 0-.98-1.37 1.5 1.5 0 0 0-1.65.3l-.05.05A1.8 1.8 0 1 1 4.25 15.3l.05-.05a1.5 1.5 0 0 0 .3-1.65 1.5 1.5 0 0 0-1.37-.9H3a1.8 1.8 0 1 1 0-3.6h.08A1.5 1.5 0 0 0 4.45 8.1a1.5 1.5 0 0 0-.3-1.65l-.05-.05A1.8 1.8 0 1 1 6.65 3.85l.05.05a1.5 1.5 0 0 0 1.65.3h.07a1.5 1.5 0 0 0 .9-1.37V2.8a1.8 1.8 0 1 1 3.6 0v.08a1.5 1.5 0 0 0 .9 1.37 1.5 1.5 0 0 0 1.65-.3l.05-.05a1.8 1.8 0 1 1 2.55 2.55l-.05.05a1.5 1.5 0 0 0-.3 1.65v.07a1.5 1.5 0 0 0 1.37.9H21a1.8 1.8 0 1 1 0 3.6h-.08a1.5 1.5 0 0 0-1.37.9Z"
         fill="none" stroke="currentColor" stroke-width="1.6" />
+    </symbol>
+    <symbol id="i-studio" viewBox="0 0 24 24">
+      <path d="M12 3v3m0 12v3M3 12h3m12 0h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
     </symbol>
     <symbol id="i-face" viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
@@ -173,6 +178,7 @@
         </div>
         <div id="model-chip" class="chip chip--model" title="AI Model — Click to configure"><i class="chip__dot"></i><span id="model-label">Gemini (3.6 Flash)</span></div>
         <div id="state-chip" class="chip" data-state="idle"><i class="chip__dot"></i><span id="state-label">Idle</span></div>
+        <button id="btn-toggle-toolbar" class="icon-btn toolbar-toggle-btn" title="Studio Atmosphere & Camera Controls" aria-label="Toggle studio scene controls"><svg><use href="#i-studio" /></svg></button>
         <button id="btn-settings" class="icon-btn" title="API & voice settings" aria-label="Settings"><svg>
             <use href="#i-gear" />
           </svg></button>
@@ -197,7 +203,11 @@
     </div>
 
     <!-- ---------- SCENE TOOLBAR ---------- -->
-    <aside class="toolbar glass">
+    <aside class="toolbar glass" id="scene-toolbar">
+      <div class="toolbar__mobile-head">
+        <span class="toolbar__mobile-title">Studio Scene & Atmosphere</span>
+        <button class="icon-btn icon-btn--sm toolbar-close-btn" id="btn-toolbar-close" title="Close"><svg><use href="#i-close" /></svg></button>
+      </div>
       <div class="toolbar__group" role="group" aria-label="Camera presets">
         <span class="toolbar__label">Camera</span>
         <div class="seg" id="seg-camera">

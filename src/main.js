@@ -97,6 +97,7 @@ async function boot() {
 
   progress(0.9, 'Calibrating camera…');
   const rig = new CameraRig(stage.camera, canvas);
+  stage.cameraRig = rig;
   const faceY = (avatar && Number.isFinite(avatar.faceY)) ? avatar.faceY : 1.57;
   const headHalfD = (avatar?.face && Number.isFinite(avatar.face.headHalfD)) ? avatar.face.headHalfD : 0.10;
   const seamY = (avatar?.face && Number.isFinite(avatar.face.seamY)) ? avatar.face.seamY : 1.48;
